@@ -1,23 +1,17 @@
 import React from 'react';
-import {getMonthlyPayment} from '../imports/model/mortgage/helper';
-import {format as f} from '../imports/helpers';
+import {getMonthlyPayment} from '../../../../imports/model/mortgage/helper';
+import {format as f} from '../../../../imports/helpers';
 
 class MortgageCalculator extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            loanAmount: 100000,
-            interestRate: 4.15,
+            loanAmount: 93279,
+            interestRate: 4.95,
             term: 30
         };
-        this.onLike = this.onLike.bind(this);
-    }
-
-    onLike () {
-        let newLikesCount = this.state.likesCount + 1;
-        this.setState({likesCount: newLikesCount});
-    }
+    }    
 
     render() {
         const {
