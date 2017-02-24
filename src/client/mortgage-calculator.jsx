@@ -1,5 +1,6 @@
 import React from 'react';
-import {onTextFieldChange} from './utils/form/onChange';
+import {getMonthlyPayment} from '../imports/model/mortgage/helper';
+import {format as f} from '../imports/helpers';
 
 class MortgageCalculator extends React.Component {
 
@@ -8,8 +9,7 @@ class MortgageCalculator extends React.Component {
         this.state = {
             loanAmount: 100000,
             interestRate: 4.15,
-            term: 30,
-            monthlyPayment: 543.23
+            term: 30
         };
         this.onLike = this.onLike.bind(this);
     }
@@ -23,10 +23,10 @@ class MortgageCalculator extends React.Component {
         const {
             loanAmount,
             interestRate,
-            term,
-            monthlyPayment
+            term
         } = this.state;
 
+        const monthlyPayment = getMonthlyPayment({initialBalance: loanAmount, paymentFrequency: 12, term, interestRate});
         return (
             <div>
                 <form>
@@ -61,7 +61,7 @@ class MortgageCalculator extends React.Component {
                         </label>
                     </div>
                     <div>
-                        <p>Monthly Payments: ${monthlyPayment}</p>
+                        <p>Monthly Payments: ${f.formatMoney(monthlyPayment)}</p>
                     </div>
                 </form>
             </div>

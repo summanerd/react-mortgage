@@ -6,7 +6,7 @@
   "scripts": {
     "test": "test",
     "dev": "webpack -d --watch",
-    "build" : "webpack -p"
+    "build": "webpack -p"
   },
   "author": "Mauricia",
   "license": "ISC",
