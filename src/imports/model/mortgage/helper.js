@@ -1,42 +1,37 @@
 export{getMonthlyPayment, getMortgageSchedule};
 
-function getMortgageSchedule(mortgage_data) {
-    let additional_payment, additional_payment_amt, additional_payment_freq, amort, amortDate, amortizationHasEnded,
-        amortizationHasNotStarted, balance, currentDate, current_amort, current_balance, current_schedule, date,
-        end_date, i, interest, interest_paid, monthlyRate, monthly_payment,
-        payment, payments, periods, principal, schedule, startDate, start_date,
-        totalInterest, _default;
+function getMortgageSchedule(mortgage) {
 
-    let {initial_balance, payback_period, payment_frequency, interest_rate} = this.attributes;
+    let {initialBalance, term, payment_frequency, interest_rate} = mortgage;
 
     mortgage_data = Object.assign({
         additional_payment: {
             amount: 0,
             frequency: 0
         }
-    }, {initial_balance, payback_period, payment_frequency, interest_rate}, mortgage_data);
+    }, {initialBalance, term, payment_frequency, interest_rate}, mortgage_data);
 
     additional_payment = mortgage_data.additional_payment;
     payments = mortgage_data.payments;
-    initial_balance = mortgage_data.initial_balance;
+    initialBalance = mortgage_data.initial_balance;
     start_date = mortgage_data.start_date;
-    payback_period = mortgage_data.payback_period;
+    term = mortgage_data.payback_period;
     payment_frequency = mortgage_data.payment_frequency;
     interest_rate = mortgage_data.interest_rate;
 
     monthly_payment = this.getMonthlyPayment({
-        initial_balance: initial_balance,
-        payback_period: payback_period,
+        initial_balance: initialBalance,
+        payback_period: term,
         payment_frequency: payment_frequency,
         interest_rate: interest_rate
     });
     if (!this.get('actual')) {
         additional_payment = payments = null;
     }
-    balance = initial_balance;
+    balance = initialBalance;
     startDate = start_date.getTime();
     currentDate = new Date;
-    periods = parseInt(payback_period, 10) * 12;
+    periods = parseInt(term, 10) * 12;
     monthlyRate = (interest_rate / 100) / payment_frequency;
     i = 0;
     schedule = new app.Collections.Mortgage.Schedule;
@@ -82,7 +77,7 @@ function getMortgageSchedule(mortgage_data) {
     amortizationHasNotStarted = startDate > currentDate.getTime();
     amortizationHasEnded = end_date.getTime() < currentDate.getTime();
     if (amortizationHasNotStarted) {
-        current_balance = initial_balance;
+        current_balance = initialBalance;
         interest_paid = 0;
     } else if (amortizationHasEnded) {
         current_balance = 0;
@@ -97,7 +92,7 @@ function getMortgageSchedule(mortgage_data) {
         current_balance = current_schedule.get('balance');
     }
     return {
-        initial_balance: initial_balance,
+        initial_balance: initialBalance,
         total_interest: totalInterest,
         payment: monthly_payment,
         time: getTime(i),
@@ -121,8 +116,8 @@ function getTime(totalMonths) {
 }
 
 
-function getMonthlyPayment(data = {}) {
-    let {initialBalance, term, paymentFrequency, interestRate} = data;
+function getMonthlyPayment(mortgage) {
+    let {initialBalance, term, paymentFrequency, interestRate} = mortgage;
 
     if (!initialBalance) {
         return 0;
@@ -131,6 +126,6 @@ function getMonthlyPayment(data = {}) {
     const periods = parseInt(term, 10) * 12,
         monthlyRate = (interestRate / 100) / paymentFrequency,
         monthlyPayment = (monthlyRate / (1 - (Math.pow(1 + monthlyRate, -periods)))) * initialBalance;
-
+    
     return monthlyPayment;
 };

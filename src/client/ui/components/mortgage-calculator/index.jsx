@@ -1,26 +1,31 @@
 import React from 'react';
 import {getMonthlyPayment} from '../../../../imports/model/mortgage/helper';
 import {format as f} from '../../../../imports/helpers';
+import FixedMortgage from '../../../../imports/model/mortgage/fixed-mortgage';
 
 class MortgageCalculator extends React.Component {
+    mortgage;
 
     constructor(props) {
         super(props);
-        this.state = {
-            loanAmount: 93279,
+
+        this.mortgage = FixedMortgage.create({
+            initialBalance: 93279,
             interestRate: 4.95,
             term: 30
-        };
+        });
+
+        this.state = this.mortgage.getDetails();
     }    
 
     render() {
         const {
-            loanAmount,
+            initialBalance,
             interestRate,
-            term
+            term,
+            monthlyPayment
         } = this.state;
 
-        const monthlyPayment = getMonthlyPayment({initialBalance: loanAmount, paymentFrequency: 12, term, interestRate});
         return (
             <div>
                 <form>
@@ -28,8 +33,8 @@ class MortgageCalculator extends React.Component {
                         <label htmlFor="txt-loan-amount">
                             <input type="text"
                                    id="txt-loan-amount"
-                                   value={loanAmount}
-                                   onChange={this.onFieldChange.bind(this, 'loanAmount')}
+                                   value={initialBalance}
+                                   onChange={this.onMortgageChange.bind(this, 'initialBalance')}
                             />
                             Loan Amount
                         </label>
@@ -39,7 +44,7 @@ class MortgageCalculator extends React.Component {
                             <input type="text"
                                    id="txt-interest-rate"
                                    value={interestRate}
-                                   onChange={this.onFieldChange.bind(this, 'interestRate')}
+                                   onChange={this.onMortgageChange.bind(this, 'interestRate')}
                             />
                             Interest Rate
                         </label>
@@ -49,7 +54,7 @@ class MortgageCalculator extends React.Component {
                             <input type="text"
                                    id="txt-term"
                                    value={term}
-                                   onChange={this.onFieldChange.bind(this, 'term')}
+                                   onChange={this.onMortgageChange.bind(this, 'term')}
                             />
                             Term
                         </label>
@@ -62,12 +67,9 @@ class MortgageCalculator extends React.Component {
         );
     }
 
-    onFieldChange (prop, event) {
-        this.updateState(prop, getTextValueFromEvent(event));
-    }
-
-    updateState(prop, val) {
-        this.setState({[prop]: val});
+    onMortgageChange (prop, event) {
+        this.mortgage[prop] = getTextValueFromEvent(event);
+        this.setState(this.mortgage.getDetails());
     }
 
 }
