@@ -1,5 +1,4 @@
 import {MortgageFactory} from './index';
-import {getMonthlyPayment} from './helper';
+import {getMonthlyPayment, getMortgageSchedule} from './helper';
 
-
-export default MortgageFactory({getMonthlyPayment});
+export default MortgageFactory({getMonthlyPayment, getMortgageSchedule});

@@ -1,16 +1,32 @@
 export {MortgageFactory};
 
 
-function MortgageFactory({getMonthlyPayment}) {
+function MortgageFactory({getMonthlyPayment, getMortgageSchedule}) {
     if (!getMonthlyPayment) {
-        throw new Error ('mandatory config \'getMonthlyPayment\' missing.')
+        throw new Error('mandatory config \'getMonthlyPayment\' missing.')
     }
-    
-    const model = {
+    if (!getMortgageSchedule) {
+        throw new Error('mandatory config \'getMortgageSchedule\' missing.')
+    }
+
+    function getModel() {
+        let additionalPayment = {};
+
+        return {
             initialBalance: 0,
             term: 0,
             interestRate: 0,
             paymentFrequency: 12,
+            startDate: new Date(),
+
+            get additionalPayment() {
+                return additionalPayment;
+            },
+
+            set additionalPayment(_additionalPayment) {
+                const {amount = 0, frequency = 0} = (_additionalPayment || {});
+                additionalPayment = {amount, frequency};
+            },
 
             getDetails () {
                 return {
@@ -18,24 +34,34 @@ function MortgageFactory({getMonthlyPayment}) {
                     term: this.term,
                     interestRate: this.interestRate,
                     paymentFrequency: this.paymentFrequency,
-                    monthlyPayment: this.monthlyPayment
+                    monthlyPayment: this.monthlyPayment,
+                    schedule: this.schedule
                 }
             }
         };
+    }
 
     return {
         create (attr) {
+            let schedule;
 
-            Object.assign(
-                model,
+            let model = Object.assign(
+                getModel(),
                 attr
             );
 
             Object.defineProperty(model, 'monthlyPayment', {
-                get : function () {
+                get: function () {
                     return getMonthlyPayment(model);
                 }
             });
+
+            Object.defineProperty(model, 'schedule', {
+                get: function () {
+                    return getMortgageSchedule(model);
+                }
+            });
+
             return model;
         }
     };

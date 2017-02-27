@@ -3,6 +3,8 @@ import {getMonthlyPayment} from '../../../../imports/model/mortgage/helper';
 import {format as f} from '../../../../imports/helpers';
 import FixedMortgage from '../../../../imports/model/mortgage/fixed-mortgage';
 
+import MortgageSummary from './summary.jsx';
+
 class MortgageCalculator extends React.Component {
     mortgage;
 
@@ -23,7 +25,8 @@ class MortgageCalculator extends React.Component {
             initialBalance,
             interestRate,
             term,
-            monthlyPayment
+            monthlyPayment,
+            schedule: summary
         } = this.state;
 
         return (
@@ -63,6 +66,7 @@ class MortgageCalculator extends React.Component {
                         <p>Monthly Payments: ${f.formatMoney(monthlyPayment)}</p>
                     </div>
                 </form>
+                <MortgageSummary summary={summary} />
             </div>
         );
     }
