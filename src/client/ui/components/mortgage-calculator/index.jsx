@@ -1,5 +1,6 @@
 import React from 'react';
 import {getMonthlyPayment} from '../../../../imports/model/mortgage/helper';
+import {ReadOnly} from '../../common';
 import {format as f} from '../../../../imports/helpers';
 import FixedMortgage from '../../../../imports/model/mortgage/fixed-mortgage';
 
@@ -62,9 +63,9 @@ class MortgageCalculator extends React.Component {
                             Term
                         </label>
                     </div>
-                    <div>
-                        <p>Monthly Payments: ${f.formatMoney(monthlyPayment)}</p>
-                    </div>
+                    <ReadOnly name="monthlyPayment"
+                              label="Monthly Payments:"
+                              value={`$ ${f.formatMoney(monthlyPayment)}`} />
                 </form>
                 <MortgageSummary summary={summary} />
             </div>

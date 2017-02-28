@@ -1,4 +1,5 @@
 import React from 'react';
+import {ReadOnly} from '../../common';
 import {dateHelper, format as f} from '../../../../imports/helpers'
 
 export default function (props) {
@@ -7,20 +8,16 @@ export default function (props) {
     return (
         <div data-region="mortgage-summary">
             <h3>Summary</h3>
-            <div>
-                <label>Total Interest</label>
-                <span>{f.formatMoney(summary.totalInterest)}</span>
-            </div>
+            <ReadOnly name="totalInterest"
+                      label="Total Interest"
+                      value={`$ ${f.formatMoney(summary.totalInterest)}`} />
+            <ReadOnly name="totalTime"
+                      label="Total Time"
+                      value={`${summary.totalTime.years} years ${summary.totalTime.months} months`} />
+            <ReadOnly name="endDate"
+                      label="End Date"
+                      value={`${dateHelper.getFullMonth(summary.amortizationDate, true)} ${summary.amortizationDate.getFullYear()}`} />
 
-            <div>
-                <label>Total Time</label>
-                <span>{summary.totalTime.years} years {summary.totalTime.months} months</span>
-            </div>
-
-            <div>
-                <label>End Date</label>
-                <span>{`${dateHelper.getFullMonth(summary.amortizationDate, true)} ${summary.amortizationDate.getFullYear()}`}</span>
-            </div>
         </div>
     );
 };

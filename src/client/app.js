@@ -2,15 +2,14 @@ import 'babel-polyfill';
 import React from 'react';
 import {render} from 'react-dom';
 
-import MortgageCalculator from './ui/components/mortgage-calculator/index.jsx';
+import {CompareCalculator} from './ui/widgets/calculator-comparison.jsx';
 
 
 class App extends React.Component {
     render() {
         return (
             <div>
-                <p> Hello Mauricia, welcome to react!</p>
-                <MortgageCalculator />
+                <CompareCalculator />
             </div>
         );
     }
