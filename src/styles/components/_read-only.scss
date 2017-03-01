@@ -4,11 +4,15 @@
 
     &__label {
         font-weight: bold;
+        font-size: .85rem;
+        color: $off-black;
     }
 
     &__value {
         display: inline-block;
         font-weight: normal;
+        font-size: 1rem;
+        color: $black;
     }
 
     &--stacked {
