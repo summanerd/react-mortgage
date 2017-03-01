@@ -1,7 +1,7 @@
 import {MortgageScheduleFactory} from './schedule/schedule.collection';
 import {dateHelper} from '../../helpers';
 
-export{getMonthlyPayment, getMortgageSchedule};
+export{getMonthlyPayment, getMortgageSchedule, getMortgageDiff};
 
 const MortgageSchedule = MortgageScheduleFactory();
 
@@ -67,4 +67,31 @@ function getMonthlyPayment(mortgage) {
         monthlyPayment = (monthlyRate / (1 - (Math.pow(1 + monthlyRate, -periods)))) * initialBalance;
 
     return monthlyPayment;
+}
+
+function getMortgageDiff(mortgageDetailsA, mortgageDetailsB) {
+    const {schedule: scheduleA} = mortgageDetailsA;
+    const {schedule: scheduleB} = mortgageDetailsB;
+
+    const totalTime = getTimeFromMonths(convertTimeToMonths(scheduleA.totalTime) - convertTimeToMonths(scheduleB.totalTime));
+
+    return{
+        totalInterest: scheduleA.totalInterest - scheduleB.totalInterest,
+        totalTime,
+        monthlyPayment: mortgageDetailsA.monthlyPayment - mortgageDetailsB.monthlyPayment
+    }
+}
+
+function convertTimeToMonths(time) {
+    return time.years * 12 + time.months;
+}
+
+function getTimeFromMonths(totalMonths) {
+    var months, years;
+    years = totalMonths / 12;
+    months = totalMonths - (years * 12);
+    return {
+        years: years,
+        months: months
+    };
 }

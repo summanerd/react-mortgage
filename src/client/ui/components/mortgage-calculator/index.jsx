@@ -1,25 +1,10 @@
 import React from 'react';
-import {getMonthlyPayment} from '../../../../imports/model/mortgage/helper';
 import {ReadOnly} from '../../common';
 import {format as f} from '../../../../imports/helpers';
-import FixedMortgage from '../../../../imports/model/mortgage/fixed-mortgage';
 
 import MortgageSummary from './summary.jsx';
 
 class MortgageCalculator extends React.Component {
-    mortgage;
-
-    constructor(props) {
-        super(props);
-
-        this.mortgage = FixedMortgage.create({
-            initialBalance: 93279,
-            interestRate: 4.95,
-            term: 30
-        });
-
-        this.state = this.mortgage.getDetails();
-    }    
 
     render() {
         const {
@@ -28,7 +13,7 @@ class MortgageCalculator extends React.Component {
             term,
             monthlyPayment,
             schedule: summary
-        } = this.state;
+        } = this.props.mortgage;
 
         return (
             <div>
@@ -73,8 +58,7 @@ class MortgageCalculator extends React.Component {
     }
 
     onMortgageChange (prop, event) {
-        this.mortgage[prop] = getTextValueFromEvent(event);
-        this.setState(this.mortgage.getDetails());
+        this.props.onChange(prop, getTextValueFromEvent(event));
     }
 
 }
