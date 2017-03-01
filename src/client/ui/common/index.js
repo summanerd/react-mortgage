@@ -1,3 +1,3 @@
-import ReadOnly from './read-only.jsx';
+import {ReadOnly, ReadOnlyStacked} from './read-only.jsx';
 
-export {ReadOnly};
+export {ReadOnly, ReadOnlyStacked};

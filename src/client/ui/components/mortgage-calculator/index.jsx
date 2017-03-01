@@ -1,5 +1,5 @@
 import React from 'react';
-import {ReadOnly} from '../../common';
+import {ReadOnlyStacked} from '../../common';
 import {format as f} from '../../../../imports/helpers';
 
 import MortgageSummary from './summary.jsx';
@@ -18,7 +18,7 @@ class MortgageCalculator extends React.Component {
         return (
             <div>
                 <form>
-                    <div>
+                    <div className="m-b--standard">
                         <label htmlFor="txt-loan-amount">
                             <input type="text"
                                    id="txt-loan-amount"
@@ -28,7 +28,7 @@ class MortgageCalculator extends React.Component {
                             Loan Amount
                         </label>
                     </div>
-                    <div>
+                    <div className="m-b--standard">
                         <label htmlFor="txt-interest-rate">
                             <input type="text"
                                    id="txt-interest-rate"
@@ -38,7 +38,7 @@ class MortgageCalculator extends React.Component {
                             Interest Rate
                         </label>
                     </div>
-                    <div>
+                    <div className="m-b--standard">
                         <label htmlFor="txt-term">
                             <input type="text"
                                    id="txt-term"
@@ -48,16 +48,18 @@ class MortgageCalculator extends React.Component {
                             Term
                         </label>
                     </div>
-                    <ReadOnly name="monthlyPayment"
-                              label="Monthly Payments:"
-                              value={`$ ${f.formatMoney(monthlyPayment)}`} />
+                    <div className="m-b--standard">
+                        <ReadOnlyStacked name="monthlyPayment"
+                                         label="Monthly Payments:"
+                                         value={`$ ${f.formatMoney(monthlyPayment)}`}/>
+                    </div>
                 </form>
-                <MortgageSummary summary={summary} />
+                <MortgageSummary summary={summary}/>
             </div>
         );
     }
 
-    onMortgageChange (prop, event) {
+    onMortgageChange(prop, event) {
         this.props.onChange(prop, getTextValueFromEvent(event));
     }
 

@@ -1,0 +1,21 @@
+
+
+.read-only-field {
+
+    &__label {
+        font-weight: bold;
+    }
+
+    &__value {
+        display: inline-block;
+        font-weight: normal;
+    }
+
+    &--stacked {
+        text-align: center;
+
+        .read-only-field__value {
+            display: block;
+        }
+    }
+}

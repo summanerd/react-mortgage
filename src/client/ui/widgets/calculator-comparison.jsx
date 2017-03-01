@@ -25,7 +25,6 @@ export class CompareCalculator extends React.Component {
 
         return (
             <div data-region="calculator-comparison">
-                <MortgageDiff diff={this.getDiff()} />
 
                 {mortgages.map((mortgageName)=>{
                     const mortgage = this.state.mortgages[mortgageName];
@@ -35,6 +34,10 @@ export class CompareCalculator extends React.Component {
                         </div>
                     );
                 })}
+
+                <div className="column small-12 large-4 ">
+                    <MortgageDiff diff={this.getDiff()} />
+                </div>
             </div>
         );
     }
@@ -69,7 +72,7 @@ export class CompareCalculator extends React.Component {
                 [mortgageProp]: mortgage.getDetails()
             }
         );
-        
+
         this.setState({mortgages});
     }
 }

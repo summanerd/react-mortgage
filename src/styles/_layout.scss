@@ -1,4 +1,9 @@
-.column{
+.column {
+    float: left;
     display: inline-block;
     margin: 0 $gutter;
+}
+
+.m-b--standard {
+    margin-bottom: 10px;
 }
