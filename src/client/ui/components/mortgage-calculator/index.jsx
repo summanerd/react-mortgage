@@ -12,6 +12,7 @@ class MortgageCalculator extends React.Component {
             interestRate,
             term,
             monthlyPayment,
+            additionalPayment,
             schedule: summary
         } = this.props.mortgage;
 
@@ -53,10 +54,40 @@ class MortgageCalculator extends React.Component {
                                          label="Monthly Payments:"
                                          value={`$ ${f.formatMoney(monthlyPayment)}`}/>
                     </div>
+                    <div>
+
+                        <div className="m-b--standard">
+                            <label htmlFor="txt-additionalPayment-amount">
+                                <input type="text"
+                                       id="txt-additionalPayment-amount"
+                                       value={additionalPayment.amount}
+                                       onChange={this.onAdditionalPaymentChange.bind(this, 'amount')}
+                                />
+                                Payment
+                            </label>
+                            <label htmlFor="txt-additionalPayment-frequency">
+                                <input type="text"
+                                       id="txt-additionalPayment-frequency"
+                                       value={additionalPayment.frequency}
+                                       onChange={this.onAdditionalPaymentChange.bind(this, 'frequency')}
+                                />
+                                Frequency
+                            </label>
+                        </div>
+                    </div>
                 </form>
                 <MortgageSummary summary={summary}/>
             </div>
         );
+    }
+
+    onAdditionalPaymentChange(prop, event) {
+        const {additionalPayment} = this.props.mortgage;
+        this.props.onChange('additionalPayment', Object.assign(
+            {},
+            additionalPayment,
+            {[prop]: parseFloat(getTextValueFromEvent(event))}
+        ));
     }
 
     onMortgageChange(prop, event) {

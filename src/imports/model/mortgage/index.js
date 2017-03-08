@@ -35,6 +35,7 @@ function MortgageFactory({getMonthlyPayment, getMortgageSchedule}) {
                     interestRate: this.interestRate,
                     paymentFrequency: this.paymentFrequency,
                     monthlyPayment: this.monthlyPayment,
+                    additionalPayment,
                     schedule: this.schedule
                 }
             }

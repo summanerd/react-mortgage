@@ -12,7 +12,8 @@ function MortgageScheduleModelFactory() {
             totalInterest: 0,
             hoa: 0,
             insurance: 0,
-            balance: 0
+            balance: 0,
+            additionalPayment: 0
         };
     }
 
@@ -26,9 +27,9 @@ function MortgageScheduleModelFactory() {
 
             Object.defineProperty(model, 'total', {
                 get : function () {
-                    const {principal, interest, hoa, insurance} = model;
+                    const {principal, interest, hoa, insurance, additionalPayment} = model;
                     
-                    return principal + interest + hoa + insurance;
+                    return principal + interest + hoa + insurance + additionalPayment;
                 }
             });
             return model;

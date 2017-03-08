@@ -9,7 +9,7 @@ function getMortgageSchedule(mortgage) {
 
     let {initialBalance, additionalPayment, term, paymentFrequency, interestRate, startDate, monthlyPayment} = mortgage;
     const {amount: additionalPaymentAmt = 0, frequency: additionalPaymentFreq = 0} = additionalPayment;
-    
+
     let periods = getTotalPeriods(term, paymentFrequency),
         ratePerPeriod = getRatePerPeriod(interestRate, paymentFrequency);
     
@@ -32,7 +32,7 @@ function getMortgageSchedule(mortgage) {
             dateKey,
             date: amortDate,
             interest,
-            principal: principal,
+            principal,
             additionalPayment: _additionalPayment
         });
         
