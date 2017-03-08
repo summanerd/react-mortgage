@@ -26,17 +26,33 @@ export class CompareCalculator extends React.Component {
         return (
             <div data-region="calculator-comparison">
 
-                {mortgages.map((mortgageName)=>{
-                    const mortgage = this.state.mortgages[mortgageName];
-                    return (
-                        <div key={mortgageName} className="column">
-                            <MortgageCalculator mortgage={mortgage} onChange={this.onChange.bind(this, mortgageName)}/>
+                <div className="row">
+                    <div className="column small-12">
+                        <div className="page-title">
+                            <h1>Compare Mortgage</h1>
                         </div>
-                    );
-                })}
+                    </div>
+                </div>
+                <div className="row">
+                    <section className="column small-12 large-6">
+                        <div className="row">
 
-                <div className="column small-12 large-4 ">
-                    <MortgageDiff diff={this.getDiff()} />
+                            {mortgages.map((mortgageName)=>{
+                                const mortgage = this.state.mortgages[mortgageName];
+                                return (
+                                    <div key={mortgageName} className="column small-12 large-6">
+                                        <MortgageCalculator mortgage={mortgage} onChange={this.onChange.bind(this, mortgageName)}/>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </section>
+                    <section className="column small-12 large-6 end">
+                        <header className="section-title">
+                            <h2>Difference</h2>
+                        </header>
+                        <MortgageDiff diff={this.getDiff()} />
+                    </section>
                 </div>
             </div>
         );

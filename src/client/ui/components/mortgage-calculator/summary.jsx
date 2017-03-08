@@ -7,7 +7,7 @@ export default function (props) {
 
     return (
         <div data-region="mortgage-summary">
-            <h3>Summary</h3>
+            <h4>Summary</h4>
 
             <div className="m-b--standard">
                 <ReadOnlyStacked name="totalInterest"
