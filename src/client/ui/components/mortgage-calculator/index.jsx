@@ -1,8 +1,9 @@
 import React from 'react';
+import MortgageSummary from './summary.jsx';
+import Select from '../select.jsx';
 import {ReadOnlyStacked} from '../../common';
 import {format as f} from '../../../../imports/helpers';
 
-import MortgageSummary from './summary.jsx';
 
 class MortgageCalculator extends React.Component {
 
@@ -66,11 +67,18 @@ class MortgageCalculator extends React.Component {
                                 Payment
                             </label>
                             <label htmlFor="txt-additionalPayment-frequency">
-                                <input type="text"
-                                       id="txt-additionalPayment-frequency"
-                                       value={additionalPayment.frequency}
-                                       onChange={this.onAdditionalPaymentChange.bind(this, 'frequency')}
-                                />
+                                <Select id="txt-additionalPayment-frequency"
+                                        value={additionalPayment.frequency}
+                                        onChange={this.onAdditionalPaymentChange.bind(this, 'frequency')}
+                                        options={[
+                                            {label: 'Select Frequency', value: 0},
+                                            {label: 'Monthly', value: 1},
+                                            {label: 'Every Other Month', value: 2},
+                                            {label: 'Quarterly', value: 3},
+                                            {label: 'Semi-Annual', value: 6},
+                                            {label: 'Annual', value: 12}
+                                        ]}
+                                        />
                                 Frequency
                             </label>
                         </div>
