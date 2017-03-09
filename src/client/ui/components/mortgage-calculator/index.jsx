@@ -1,9 +1,10 @@
 import React from 'react';
 import MortgageSummary from './summary.jsx';
 import Select from '../select.jsx';
-import {ReadOnlyStacked} from '../../common';
+import {ReadOnlyStacked, Headers} from '../../common';
 import {format as f} from '../../../../imports/helpers';
 
+const {SubSectionHeader} = Headers;
 
 class MortgageCalculator extends React.Component {
 
@@ -56,7 +57,7 @@ class MortgageCalculator extends React.Component {
                                          value={`$ ${f.formatMoney(monthlyPayment)}`}/>
                     </div>
                     <div>
-                        <h4>Additional Payments</h4>
+                        <SubSectionHeader title="Additional Payments" />
                         <div className="m-b--standard">
                             <label htmlFor="txt-additionalPayment-amount">
                                 <input type="text"
@@ -66,6 +67,8 @@ class MortgageCalculator extends React.Component {
                                 />
                                 Payment
                             </label>
+                        </div>
+                        <div className="m-b--standard">
                             <label htmlFor="txt-additionalPayment-frequency">
                                 <Select id="txt-additionalPayment-frequency"
                                         value={additionalPayment.frequency}

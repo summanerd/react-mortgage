@@ -5,7 +5,9 @@ import FixedMortgage from '../../../imports/model/mortgage/fixed-mortgage';
 import {getMortgageDiff} from '../../../imports/model/mortgage/helper';
 import MortgageCalculator from '../components/mortgage-calculator/index.jsx';
 import MortgageDiff from '../components/mortgage-diff.jsx';
+import {Headers} from '../common';
 
+const {SectionTitle, PageTitle} = Headers;
 const defaultMortgage = {
     initialBalance: 93279,
     interestRate: 4.95,
@@ -28,9 +30,7 @@ export class CompareCalculator extends React.Component {
 
                 <div className="row">
                     <div className="column small-12">
-                        <div className="page-title">
-                            <h1>Compare Mortgage</h1>
-                        </div>
+                        <PageTitle title="Compare Mortgage" />
                     </div>
                 </div>
                 <div className="row">
@@ -48,9 +48,7 @@ export class CompareCalculator extends React.Component {
                         </div>
                     </section>
                     <section className="column small-12 large-6 end">
-                        <header className="section-title">
-                            <h2>Difference</h2>
-                        </header>
+                        <SectionTitle title="Difference" />
                         <MortgageDiff diff={this.getDiff()} />
                     </section>
                 </div>

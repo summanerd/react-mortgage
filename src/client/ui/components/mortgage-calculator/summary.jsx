@@ -1,13 +1,15 @@
 import React from 'react';
-import {ReadOnlyStacked} from '../../common';
-import {dateHelper, format as f} from '../../../../imports/helpers'
+import {ReadOnlyStacked, Headers} from '../../common';
+import {dateHelper, format as f} from '../../../../imports/helpers';
+
+const {SubSectionHeader} = Headers;
 
 export default function (props) {
     const {summary} = props;
 
     return (
         <div data-region="mortgage-summary">
-            <h4>Summary</h4>
+            <SubSectionHeader title="Summary" />
 
             <div className="m-b--standard">
                 <ReadOnlyStacked name="totalInterest"
