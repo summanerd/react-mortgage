@@ -56,7 +56,7 @@ class MortgageCalculator extends React.Component {
                                          value={`$ ${f.formatMoney(monthlyPayment)}`}/>
                     </div>
                     <div>
-
+                        <h4>Additional Payments</h4>
                         <div className="m-b--standard">
                             <label htmlFor="txt-additionalPayment-amount">
                                 <input type="text"
@@ -90,11 +90,12 @@ class MortgageCalculator extends React.Component {
     }
 
     onAdditionalPaymentChange(prop, event) {
-        const {additionalPayment} = this.props.mortgage;
+        const {additionalPayment} = this.props.mortgage,
+            val = parseFloat(getTextValueFromEvent(event));
         this.props.onChange('additionalPayment', Object.assign(
             {},
             additionalPayment,
-            {[prop]: parseFloat(getTextValueFromEvent(event))}
+            {[prop]: val !== val ? null : val}
         ));
     }
 
