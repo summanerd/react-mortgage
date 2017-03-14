@@ -1,1 +1,17 @@
- { "presets": [ "es2015", "react" ] }
+{
+  "presets": [
+    "es2015",
+    "react"
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        ["istanbul", {
+          "exclude": [
+            "**/*.spec.js"
+          ]
+        }]
+      ]
+    }
+  }
+}

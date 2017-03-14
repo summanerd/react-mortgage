@@ -1,13 +1,19 @@
 var path = require('path');
 var launchers = require('./test/config/launchers');
 var webpackConfig = require('./webpack.config');
-// webpackConfig.entry = {};
-webpackConfig.devtool = 'inline-source-map';
 
 var browsers = Object.keys(launchers);
 var BUILD_DIR = path.resolve(__dirname, 'public');
-var APP_DIR = path.resolve(__dirname, 'src');
+var SRC_DIR = path.resolve(__dirname, 'src');
 var TEST_DIR = path.resolve(__dirname, 'test');
+
+webpackConfig.module.loaders.forEach(function (loader) {
+    if (loader.loader !== 'babel-loader') {
+        return;
+    }
+    loader.include = SRC_DIR;
+});
+webpackConfig.devtool = 'inline-source-map';
 
 module.exports = function (config) {
     config.set({
@@ -18,18 +24,14 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            './src/**/*.js',
-            './test/src/**/*.spec.js'
-            // './test/test.bundle.js'
+            './test/test.bundle.js'
         ],
 
         // list of files to exclude
         exclude: [],
 
         preprocessors: {
-            // './test/test.bundle.js': ['webpack', 'sourcemap'],
-            './test/src/**/*.spec.js': ['webpack','babel'],
-            './src/**/*.js': ['webpack','babel','coverage']
+            './test/test.bundle.js': ['webpack']
         },
 
         // use dots reporter, as travis terminal does not support escaping sequences
@@ -94,12 +96,10 @@ module.exports = function (config) {
             'karma-jasmine',
             'karma-coverage',
             'karma-webpack',
-            'karma-sourcemap-loader',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
             'karma-safari-launcher',
-            // 'karma-junit-reporter',
-            'karma-babel-preprocessor'
+            // 'karma-junit-reporter'
         ],
 
         concurrency: 3,

@@ -14,16 +14,16 @@ var config = {
     module: {
         loaders: [
             {
-                 test: /\.jsx?/,
-                 include: APP_DIR,
-                 loader: 'babel-loader'
-            },{
+                test: /\.jsx?/,
+                include: APP_DIR,
+                loader: 'babel-loader'
+            }, {
                 test: /\.scss$/,
                 loader: 'style-loader'
-            },{
+            }, {
                 test: /\.scss$/,
                 loader: 'css-loader'
-            },{
+            }, {
                 test: /\.scss$/,
                 loader: 'sass-loader',
                 options: {
@@ -31,6 +31,13 @@ var config = {
                 }
             }
         ]
+        // postLoaders: [
+        //     { //delays coverage til after tests are run, fixing transpiled source coverage error
+        //         test: /\.js?/,
+        //         include: path.resolve(__dirname, 'src/'),
+        //         loader: 'istanbul-instrumenter-loader'
+        //     }
+        // ]
     }
 };
 

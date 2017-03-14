@@ -12,6 +12,12 @@ describe('Helpers', function () {
                     expect(dateHelper.getFullMonth(new Date(2000, 2))).toBe('March');
                 });
             });
+            describe('when abbreviation is provided', function () {
+
+                it('should abbreviate month', function(){
+                    expect(dateHelper.getFullMonth(new Date(2000, 2), true)).toBe('Mar');
+                });
+            });
         });
 
     });
