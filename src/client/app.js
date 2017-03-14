@@ -16,4 +16,13 @@ class App extends React.Component {
     }
 }
 
-render(<App/>, document.querySelector('[data-region="app"]'));
+let appContainer = document.querySelector('[data-region="app"]');
+
+if (!appContainer){
+    let div = document.createElement('div');
+    div.setAttribute('data-region', 'app');
+    document.body.appendChild(div);
+    appContainer = document.querySelector('[data-region="app"]');
+}
+
+render(<App/>, appContainer);

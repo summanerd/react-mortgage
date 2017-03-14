@@ -18,17 +18,18 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            './test/test.bundle.js'
+            './src/**/*.js',
+            './test/src/**/*.spec.js'
+            // './test/test.bundle.js'
         ],
 
         // list of files to exclude
-        exclude: [
-        ],
+        exclude: [],
 
         preprocessors: {
-            './test/test.bundle.js': ['webpack', 'sourcemap'],
-            // './test/src/**/*.spec.js': ['babel'],
-            // './src/**/*.js': ['coverage']
+            // './test/test.bundle.js': ['webpack', 'sourcemap'],
+            './test/src/**/*.spec.js': ['webpack','babel'],
+            './src/**/*.js': ['webpack','babel','coverage']
         },
 
         // use dots reporter, as travis terminal does not support escaping sequences
@@ -73,7 +74,7 @@ module.exports = function (config) {
         // - PhantomJS
         // - IE (only Windows)
         // CLI --browsers Chrome,Firefox,Safari
-        browsers: browsers,
+        browsers: ['Chrome'],
 
         // customLaunchers: launchers,
 
@@ -96,9 +97,9 @@ module.exports = function (config) {
             'karma-sourcemap-loader',
             'karma-chrome-launcher',
             'karma-firefox-launcher',
-            'karma-safari-launcher'
+            'karma-safari-launcher',
             // 'karma-junit-reporter',
-            // 'karma-babel-preprocessor'
+            'karma-babel-preprocessor'
         ],
 
         concurrency: 3,
