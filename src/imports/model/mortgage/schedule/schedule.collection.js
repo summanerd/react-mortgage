@@ -41,36 +41,12 @@ function MortgageScheduleFactory() {
                 return balance;
             },
 
-            get currentSchedule() {
-                return collection[collection.length - 1];
-            },
-
             get totalTime() {
                 return getTotalTime(this);
-            },
-
-            getSchedule (dateKey) {
-                return {};
-            },
-
-            remove (dateKey) {
-                return {};
             }
         };
 
         return model;
-    }
-
-    function sort(collection) {
-        collection.sort((a, b)=> {
-            if (a.dateKey < b.dateKey) {
-                return -1;
-            }
-            if (a.dateKey > b.dateKey) {
-                return 1;
-            }
-            return 0;
-        });
     }
 
     return {
@@ -80,7 +56,6 @@ function MortgageScheduleFactory() {
         }
     };
 };
-
 
 
 function getTotalTime({startDate, amortizationDate}) {
@@ -93,7 +68,7 @@ function getTotalTime({startDate, amortizationDate}) {
 
 function getTime(totalMonths) {
     var months, years;
-    years = totalMonths / 12;
+    years = parseInt(totalMonths / 12, 10);
     months = totalMonths - (years * 12);
     return {
         years: years,

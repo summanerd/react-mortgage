@@ -1,7 +1,5 @@
 import {dateHelper} from './import';
-// const {dateHelper} = helpers;
 
-// console.log(JSON.stringify(helpers))
 describe('Helpers', function () {
     describe('Date Helper', function () {
 
