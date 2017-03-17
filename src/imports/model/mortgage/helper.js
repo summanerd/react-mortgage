@@ -88,7 +88,7 @@ function convertTimeToMonths(time) {
 
 function getTimeFromMonths(totalMonths) {
     var months, years;
-    years = totalMonths / 12;
+    years = parseInt(totalMonths / 12);
     months = totalMonths - (years * 12);
     return {
         years: years,

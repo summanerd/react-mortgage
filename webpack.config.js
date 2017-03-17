@@ -38,6 +38,11 @@ var config = {
         //         loader: 'istanbul-instrumenter-loader'
         //     }
         // ]
+    },
+    externals: {
+        'react/addons': true,
+        'react/lib/ExecutionEnvironment': true,
+        'react/lib/ReactContext': true,
     }
 };
 

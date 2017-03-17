@@ -9,7 +9,7 @@ function ReadOnly(props) {
         <div className={`read-only-field ${classNames}`} data-field={props.name}>
             <label className="read-only-field__label">
                 {props.label} 
-                <span className="read-only-field__value">{props.value}</span>
+                <span className="read-only-field__value" data-container="value">{props.value}</span>
             </label>
         </div>
     )

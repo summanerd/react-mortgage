@@ -102,6 +102,37 @@ describe('Model', function () {
                             expect(totalInterest).toBeLessThan(19890.63);
                         });
                     });
+
+                    describe('when compared with a similar mortgage that has an additional payment 100 every other month', function(){
+
+                        beforeEach(function(){
+                            const otherMortgage = FixedMortgage.create({
+                                initialBalance: 93279,
+                                interestRate: 4.95,
+                                term: 30,
+                                startDate: new Date(2000, 2)
+                            });
+                            otherMortgage.additionalPayment = {amount: 100, frequency: 2};
+                            this.diff = this.SUT.getDiff(otherMortgage.getDetails());
+                        });
+
+                        it('should not have 5 year 5 month difference in time', function(){
+                            const {totalTime} = this.diff;
+                            expect(totalTime.months).toBe(5);
+                            expect(totalTime.years).toBe(5);
+                        });
+
+                        it('should have a difference in monthly payment 0', function(){
+                            const {monthlyPayment} = this.diff;
+                            expect(monthlyPayment).toEqual(0);
+                        });
+
+                        it('should have a difference in total interest +17,922.717', function(){
+                            const {totalInterest} = this.diff;
+                            expect(totalInterest).toBeGreaterThan(17922.71);
+                            expect(totalInterest).toBeLessThan(17922.72);
+                        });
+                    });
                 });
 
                 describe('when additional payments are 100 per monthly', function () {

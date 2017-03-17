@@ -3,7 +3,7 @@ import React from 'react';
 export default function Select(props) {
     
     return (
-        <select value={props.value} onChange={props.onChange}>
+        <select id={props.id} value={props.value} onChange={props.onChange}>
 
             {props.options.map((option, index)=> {
                 return (

@@ -66,14 +66,15 @@ export class CompareCalculator extends React.Component {
             state.mortgages[key] = this.mortgages[key].getDetails();
         }
 
-        state.compare = Object.keys(state.mortgages).slice(0, 2);
+        state.compare = Object.keys(state.mortgages).slice(0, props.numberOfCalculators);
         this.state = state;
         
     }
 
     getDiff () {
-        const mortgageDetails = this.state.compare.map(name=> this.state.mortgages[name]);
-        return getMortgageDiff.apply(null, mortgageDetails);
+        const baseMortgage = this.mortgages[this.state.compare[0]];
+        const mortgageDetails = this.state.mortgages[this.state.compare[1]];
+        return baseMortgage.getDiff(mortgageDetails);
     }
     
     onChange(mortgageProp, prop, value) {

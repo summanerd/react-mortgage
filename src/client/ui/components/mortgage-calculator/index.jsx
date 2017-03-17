@@ -56,7 +56,7 @@ class MortgageCalculator extends React.Component {
                                          label="Monthly Payments:"
                                          value={`$ ${f.formatMoney(monthlyPayment)}`}/>
                     </div>
-                    <div>
+                    <div data-region="additional-payment">
                         <SubSectionHeader title="Additional Payments" />
                         <div className="m-b--standard">
                             <label htmlFor="txt-additionalPayment-amount">
@@ -69,8 +69,8 @@ class MortgageCalculator extends React.Component {
                             </label>
                         </div>
                         <div className="m-b--standard">
-                            <label htmlFor="txt-additionalPayment-frequency">
-                                <Select id="txt-additionalPayment-frequency"
+                            <label htmlFor="sel-additionalPayment-frequency">
+                                <Select id="sel-additionalPayment-frequency"
                                         value={additionalPayment.frequency}
                                         onChange={this.onAdditionalPaymentChange.bind(this, 'frequency')}
                                         options={[
@@ -95,10 +95,11 @@ class MortgageCalculator extends React.Component {
     onAdditionalPaymentChange(prop, event) {
         const {additionalPayment} = this.props.mortgage,
             val = parseFloat(getTextValueFromEvent(event));
+        
         this.props.onChange('additionalPayment', Object.assign(
             {},
             additionalPayment,
-            {[prop]: val !== val ? null : val}
+            {[prop]: val}
         ));
     }
 
@@ -109,7 +110,7 @@ class MortgageCalculator extends React.Component {
 }
 
 function getTextValueFromEvent(event) {
-    return event.currentTarget.value;
+    return event.target.value;
 }
 
 export default MortgageCalculator;
