@@ -1,48 +1,60 @@
-var path = require('path');
+const path = require('path');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var BUILD_DIR = path.resolve(__dirname, 'public');
-var APP_DIR = path.resolve(__dirname, 'src/client');
-var FOUNDATION_DIR = path.resolve(__dirname, 'node_modules/foundation-sites');
+const extractSass = new ExtractTextPlugin({
+    filename: "[name].css",
+    disable: false//process.env.NODE_ENV === "development"
+});
+const BUILD_DIR = path.resolve(__dirname, 'public');
+const APP_DIR = path.resolve(__dirname, 'src/client');
+const FOUNDATION_DIR = path.resolve(__dirname, 'node_modules/foundation-sites');
 
 
-var config = {
-    entry: APP_DIR + '/app.js',
+const config = {
+    devServer: { inline: true },
+    entry: [
+        // 'webpack-dev-server/client?http://localhost:8080/',
+        APP_DIR + '/app.js',
+        path.resolve(__dirname, 'src/styles/main.scss')
+    ],
     output: {
-         path: BUILD_DIR + '/js',
-         filename: 'main.js'
+        path: BUILD_DIR + '/js',
+        filename: 'main.js',
+        publicPath: '/assets'
     },
     module: {
-        loaders: [
+        rules: [
             {
                 test: /\.jsx?/,
                 include: APP_DIR,
                 loader: 'babel-loader'
-            }, {
+            },
+            {
                 test: /\.scss$/,
-                loader: 'style-loader'
-            }, {
-                test: /\.scss$/,
-                loader: 'css-loader'
-            }, {
-                test: /\.scss$/,
-                loader: 'sass-loader',
-                options: {
-                    includePaths: [FOUNDATION_DIR + '/scss']
-                }
+                include: path.resolve(__dirname, 'src/styles'),
+                use: extractSass.extract({
+                    use: [{
+                        loader: "css-loader"
+                    }, {
+                        loader: "sass-loader",
+                        options: {
+                            includePaths: [FOUNDATION_DIR + '/scss']
+                        }
+                    }],
+                    // use style-loader in development
+                    fallback: "style-loader",
+                    publicPath: '/css'
+                })
             }
         ]
-        // postLoaders: [
-        //     { //delays coverage til after tests are run, fixing transpiled source coverage error
-        //         test: /\.js?/,
-        //         include: path.resolve(__dirname, 'src/'),
-        //         loader: 'istanbul-instrumenter-loader'
-        //     }
-        // ]
     },
+    plugins: [
+        extractSass
+    ],
     externals: {
         'react/addons': true,
         'react/lib/ExecutionEnvironment': true,
-        'react/lib/ReactContext': true,
+        'react/lib/ReactContext': true
     }
 };
 

@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test karma start",
-    "dev": "webpack -d --watch",
+    "dev": "webpack-dev-server --colors ",
+    "styles": "webpack --config webpack-styles.config.js",
+    "styles:watch": "webpack --config webpack-styles.config.js -d --watch",
     "build": "webpack -p"
   },
   "author": "Mauricia",
@@ -17,6 +19,7 @@
     "babel-preset-react": "^6.23.0",
     "css-loader": "^0.26.2",
     "enzyme": "^2.7.1",
+    "extract-text-webpack-plugin": "^2.1.0",
     "foundation-sites": "^6.3.1",
     "istanbul-instrumenter-loader": "^2.0.0",
     "jasmine-core": "^2.5.2",
@@ -34,7 +37,8 @@
     "react-addons-test-utils": "^15.4.2",
     "sass-loader": "^6.0.2",
     "style-loader": "^0.13.2",
-    "webpack": "^2.2.1"
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.2"
   },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
