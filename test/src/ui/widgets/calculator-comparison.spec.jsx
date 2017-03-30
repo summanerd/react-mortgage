@@ -7,7 +7,14 @@ describe('ui', function () {
         describe('Calculator Comparison', function () {
             describe('when rendered without configuration', function () {
                 beforeEach(function () {
-                    this.SUT = mount(<CompareCalculator />);
+                    this.container = document.createElement('div');
+                    document.body.appendChild(this.container);
+                    this.SUT = mount(<CompareCalculator />, {attachTo: this.container});
+                });
+
+                afterEach(function () {
+                    this.SUT.unmount();
+                    document.body.removeChild(this.container)
                 });
 
                 it('should render two calculators', function () {
@@ -16,6 +23,15 @@ describe('ui', function () {
 
                 it('should display diff', function () {
                     expect(this.SUT.find('[data-region="mortgage-diff"]').length).toEqual(1);
+                });
+
+                it('total interest: $ 85,963.31', function () {
+                    let monthlyPayment = this.SUT.find('MortgageCalculator').last()
+                        .find('[data-field="totalInterest"]')
+                        .find('[data-container="value"]')
+                        .text().trim();
+
+                    expect(monthlyPayment).toMatch(/\$ 85,963.31$/);
                 });
 
                 describe('values in diff should be:', function () {
@@ -142,6 +158,80 @@ describe('ui', function () {
                                 .text().trim();
 
                             expect(monthlyPayment).toMatch(/\$ 19,890.62$/);
+                        });
+                    });
+                });
+
+                describe('and points is changed to 1', function () {
+                    beforeEach(function (done) {
+                        this.calculator = this.SUT.find('MortgageCalculator').last();
+                        this.input = this.calculator.find('[data-field="points"] input');
+
+                        this.input.simulate('focus')
+                            .simulate('change', { target: { value: '2' } });
+                        this.SUT.update();
+
+                        setTimeout(done);
+                    });
+
+                    it('total interest: $ 85,963.31', function () {
+                        let monthlyPayment = this.calculator
+                            .find('[data-field="totalInterest"]')
+                            .find('[data-container="value"]')
+                            .text().trim();
+
+                        expect(monthlyPayment).toMatch(/\$ 85,963.31$/);
+                    });
+
+                    it('total cost: $ 87,828.89', function () {
+                        let monthlyPayment = this.calculator
+                            .find('[data-field="totalCost"]')
+                            .find('[data-container="value"]')
+                            .text().trim();
+
+                        expect(monthlyPayment).toMatch(/\$ 87,828.89$/);
+                    });
+
+                    describe('values in diff should be:', function () {
+                        beforeEach(function(){
+                            this.diffRegion = this.SUT.find('[data-region="mortgage-diff"]');
+                        });
+
+                        it('total time: 0 years 0 months', function () {
+                            let totalTime = this.diffRegion
+                                .find('[data-field="totalTime"]')
+                                .find('[data-container="value"]')
+                                .text().trim();
+
+                            expect(totalTime).toMatch(/0 years 0 months/);
+                        });
+
+                        it('monthlyPayment: $ --', function () {
+                            let monthlyPayment = this.diffRegion
+                                .find('[data-field="monthlyPayment"]')
+                                .find('[data-container="value"]')
+                                .text().trim();
+
+                            expect(monthlyPayment).toMatch(/\$ --$/);
+                        });
+
+                        it('total interest: $ --', function () {
+                            let monthlyPayment = this.diffRegion
+                                .find('[data-field="totalInterest"]')
+                                .find('[data-container="value"]')
+                                .text().trim();
+
+                            expect(monthlyPayment).toMatch(/\$ --$/);
+                        });
+
+                        it('total cost: $ (1,865.58)', function () {
+                            let monthlyPayment = this.diffRegion
+                                .find('[data-field="totalCost"]')
+                                .find('[data-container="value"]')
+                                .text().trim();
+
+                            debugger;
+                            expect(monthlyPayment).toMatch(/\$ \(1,865.58\)$/);
                         });
                     });
                 });

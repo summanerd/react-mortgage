@@ -5,7 +5,7 @@ import {format as f} from '../../../imports/helpers';
 
 
 export default function (props) {
-    const {diff: {totalTime, totalInterest, monthlyPayment}} = props;
+    const {diff: {totalTime, totalInterest, totalCost, monthlyPayment}} = props;
 
     return (
         <div data-region="mortgage-diff">
@@ -25,6 +25,12 @@ export default function (props) {
                 <ReadOnlyStacked name="totalInterest"
                                  label="Total Interest:"
                                  value={`$ ${f.formatMoney(totalInterest)}`}/>
+            </div>
+
+            <div className="m-b--standard">
+                <ReadOnlyStacked name="totalCost"
+                                 label="Total Cost:"
+                                 value={`$ ${f.formatMoney(totalCost)}`}/>
             </div>
         </div>
     );

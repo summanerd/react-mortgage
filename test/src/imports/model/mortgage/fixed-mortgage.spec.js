@@ -54,15 +54,19 @@ describe('Model', function () {
                     expect(this.mortgageDetails.monthlyPayment).toBeLessThan(497.91);
                 });
 
+                it('should have total point cost of 0.00', function(){
+                    expect(this.mortgageDetails.pointsCost).toBe(0);
+                });
+
                 it('should have time of 30 years 0 months', function(){
                     const time = this.mortgageDetails.schedule.totalTime;
                     expect(time.months).toBe(0);
                     expect(time.years).toBe(30);
                 });
 
-                it('should have total interest', function(){
-                    expect(this.mortgageDetails.schedule.totalInterest).toBeGreaterThan(85963.30);
-                    expect(this.mortgageDetails.schedule.totalInterest).toBeLessThan(85963.32);
+                it('should have total cost 85,963.31', function(){
+                    expect(this.mortgageDetails.totalCost).toBeGreaterThan(85963.30);
+                    expect(this.mortgageDetails.totalCost).toBeLessThan(85963.32);
                 });
 
                 it('should have end date March 2030', function(){
@@ -193,6 +197,30 @@ describe('Model', function () {
                             expect(amortizationDate.getFullYear()).toBe(2030);
                             expect(amortizationDate.getMonth()).toBe(2);
                         });
+                    });
+                });
+
+                describe('when mortgage has 2 points', function () {
+
+                    beforeEach(function(){
+                        this.SUT = FixedMortgage.create({
+                            initialBalance: 93279,
+                            points: 2,
+                            interestRate: 4.95,
+                            term: 30,
+                            startDate: new Date(2000, 2)
+                        });
+
+                        this.mortgageDetails = this.SUT.getDetails();
+                    });
+
+                    it('should have total point cost of 0.00', function(){
+                        expect(this.mortgageDetails.pointsCost).toBe(1865.58);
+                    });
+
+                    it('should have total cost of 87,828.89', function(){
+                        expect(this.mortgageDetails.totalCost).toBeGreaterThan(87828.88);
+                        expect(this.mortgageDetails.totalCost).toBeLessThan(87828.90);
                     });
                 });
             });

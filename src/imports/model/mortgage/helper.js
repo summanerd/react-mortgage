@@ -76,6 +76,7 @@ function getMortgageDiff(mortgageDetailsA, mortgageDetailsB) {
     const totalTime = getTimeFromMonths(convertTimeToMonths(scheduleA.totalTime) - convertTimeToMonths(scheduleB.totalTime));
 
     return{
+        totalCost: mortgageDetailsA.totalCost - mortgageDetailsB.totalCost,
         totalInterest: scheduleA.totalInterest - scheduleB.totalInterest,
         totalTime,
         monthlyPayment: mortgageDetailsA.monthlyPayment - mortgageDetailsB.monthlyPayment

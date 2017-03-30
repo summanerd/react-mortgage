@@ -13,9 +13,10 @@ class MortgageCalculator extends React.Component {
             initialBalance,
             interestRate,
             term,
+            points,
+            pointsCost,
             monthlyPayment,
-            additionalPayment,
-            schedule: summary
+            additionalPayment
         } = this.props.mortgage;
 
         return (
@@ -41,6 +42,15 @@ class MortgageCalculator extends React.Component {
                             Interest Rate
                         </label>
                     </div>
+                    <div className="m-b--standard" data-field="points">
+                        <label>
+                            <input type="text"
+                                   value={points}
+                                   onChange={this.onMortgageChange.bind(this, 'points')}
+                            />
+                            Points
+                        </label>
+                    </div>
                     <div className="m-b--standard">
                         <label htmlFor="txt-term">
                             <input type="text"
@@ -48,6 +58,7 @@ class MortgageCalculator extends React.Component {
                                    value={term}
                                    onChange={this.onMortgageChange.bind(this, 'term')}
                             />
+                            <span>{pointsCost}</span>
                             Term
                         </label>
                     </div>
@@ -87,7 +98,7 @@ class MortgageCalculator extends React.Component {
                         </div>
                     </div>
                 </form>
-                <MortgageSummary summary={summary}/>
+                <MortgageSummary {...this.props}/>
             </div>
         );
     }

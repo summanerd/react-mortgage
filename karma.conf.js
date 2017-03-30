@@ -3,11 +3,10 @@ var launchers = require('./test/config/launchers');
 var webpackConfig = require('./webpack.config');
 
 var browsers = Object.keys(launchers);
-var BUILD_DIR = path.resolve(__dirname, 'public');
 var SRC_DIR = path.resolve(__dirname, 'src');
 var TEST_DIR = path.resolve(__dirname, 'test');
 
-webpackConfig.module.loaders.forEach(function (loader) {
+webpackConfig.module.rules.forEach(function (loader) {
     if (loader.loader !== 'babel-loader') {
         return;
     }
@@ -37,7 +36,7 @@ module.exports = function (config) {
         // use dots reporter, as travis terminal does not support escaping sequences
         // possible values: 'dots', 'progress'
         // CLI --reporters progress
-        reporters: ['progress', 'coverage'],// 'junit'],
+        reporters: ['dots','progress', 'coverage'],// 'junit'],
 
         // junitReporter: {
         //     // will be resolved to basePath (in the same way as files/exclude patterns)
