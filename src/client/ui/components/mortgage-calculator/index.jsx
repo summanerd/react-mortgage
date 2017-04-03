@@ -1,5 +1,4 @@
 import React from 'react';
-import MortgageSummary from './summary.jsx';
 import Select from '../select.jsx';
 import {ReadOnlyStacked, InputLabel, Headers} from '../../common';
 import {format as f} from '../../../../imports/helpers';
@@ -20,7 +19,7 @@ class MortgageCalculator extends React.Component {
         } = this.props.mortgage;
 
         return (
-            <div>
+            <div data-region="mortgage-calculator">
                 <form>
                     <div className="m-b--standard">
                         <InputLabel name="loanAmount" label="Loan Amount" >
@@ -91,7 +90,6 @@ class MortgageCalculator extends React.Component {
                         </div>
                     </div>
                 </form>
-                <MortgageSummary {...this.props}/>
             </div>
         );
     }

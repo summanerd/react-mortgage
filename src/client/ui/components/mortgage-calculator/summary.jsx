@@ -4,7 +4,7 @@ import {dateHelper, format as f} from '../../../../imports/helpers';
 
 const {SubSectionHeader} = Headers;
 
-export default function (props) {
+export default function MortgageSummary(props) {
     const {
         totalCost,
         schedule: summary

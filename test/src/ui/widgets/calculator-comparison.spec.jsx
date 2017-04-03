@@ -26,7 +26,7 @@ describe('ui', function () {
                 });
 
                 it('total interest: $ 85,963.31', function () {
-                    let monthlyPayment = this.SUT.find('MortgageCalculator').last()
+                    let monthlyPayment = this.SUT.find('MortgageSummary').last()
                         .find('[data-field="totalInterest"]')
                         .find('[data-container="value"]')
                         .text().trim();
@@ -165,6 +165,7 @@ describe('ui', function () {
                 describe('and points is changed to 1', function () {
                     beforeEach(function (done) {
                         this.calculator = this.SUT.find('MortgageCalculator').last();
+                        this.summary = this.SUT.find('MortgageSummary').last();
                         this.input = this.calculator.find('[data-field="points"] input');
 
                         this.input.simulate('focus')
@@ -175,7 +176,7 @@ describe('ui', function () {
                     });
 
                     it('total interest: $ 85,963.31', function () {
-                        let monthlyPayment = this.calculator
+                        let monthlyPayment = this.summary
                             .find('[data-field="totalInterest"]')
                             .find('[data-container="value"]')
                             .text().trim();
@@ -184,7 +185,7 @@ describe('ui', function () {
                     });
 
                     it('total cost: $ 87,828.89', function () {
-                        let monthlyPayment = this.calculator
+                        let monthlyPayment = this.summary
                             .find('[data-field="totalCost"]')
                             .find('[data-container="value"]')
                             .text().trim();
@@ -230,7 +231,6 @@ describe('ui', function () {
                                 .find('[data-container="value"]')
                                 .text().trim();
 
-                            debugger;
                             expect(monthlyPayment).toMatch(/\$ \(1,865.58\)$/);
                         });
                     });

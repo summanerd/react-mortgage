@@ -3,6 +3,7 @@ import {render} from 'react-dom';
 
 import {FixedMortgage} from '../../../imports/model/mortgage/mortgage.factory';
 import MortgageCalculator from '../components/mortgage-calculator/index.jsx';
+import MortgageSummary from '../components/mortgage-calculator/summary.jsx';
 import MortgageDiff from '../components/mortgage-diff.jsx';
 import {Headers} from '../common';
 
@@ -39,8 +40,9 @@ export class CompareCalculator extends React.Component {
                             {mortgages.map((mortgageName)=>{
                                 const mortgage = this.state.mortgages[mortgageName];
                                 return (
-                                    <div key={mortgageName} className="column small-12 large-6">
+                                    <div key={mortgageName} data-mortgage={mortgageName} className="column small-12 large-6">
                                         <MortgageCalculator mortgage={mortgage} onChange={this.onChange.bind(this, mortgageName)}/>
+                                        <MortgageSummary mortgage={mortgage}/>
                                     </div>
                                 );
                             })}
