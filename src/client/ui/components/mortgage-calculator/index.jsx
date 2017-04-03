@@ -1,7 +1,7 @@
 import React from 'react';
 import MortgageSummary from './summary.jsx';
 import Select from '../select.jsx';
-import {ReadOnlyStacked, Headers} from '../../common';
+import {ReadOnlyStacked, InputLabel, Headers} from '../../common';
 import {format as f} from '../../../../imports/helpers';
 
 const {SubSectionHeader} = Headers;
@@ -23,44 +23,39 @@ class MortgageCalculator extends React.Component {
             <div>
                 <form>
                     <div className="m-b--standard">
-                        <label htmlFor="txt-loan-amount">
+                        <InputLabel name="loanAmount" label="Loan Amount" >
                             <input type="text"
                                    id="txt-loan-amount"
                                    value={initialBalance}
                                    onChange={this.onMortgageChange.bind(this, 'initialBalance')}
                             />
-                            Loan Amount
-                        </label>
+                        </InputLabel>
                     </div>
                     <div className="m-b--standard">
-                        <label htmlFor="txt-interest-rate">
+                        <InputLabel name="interestRate" label="Interest Rate" >
                             <input type="text"
                                    id="txt-interest-rate"
                                    value={interestRate}
                                    onChange={this.onMortgageChange.bind(this, 'interestRate')}
                             />
-                            Interest Rate
-                        </label>
+                        </InputLabel>
                     </div>
-                    <div className="m-b--standard" data-field="points">
-                        <label>
+                    <div className="m-b--standard">
+                        <InputLabel name="points" label="Points" inlineHint={pointsCost ? `$ ${f.formatMoney(pointsCost)}` : ''}>
                             <input type="text"
                                    value={points}
                                    onChange={this.onMortgageChange.bind(this, 'points')}
                             />
-                            Points
-                        </label>
+                        </InputLabel>
                     </div>
                     <div className="m-b--standard">
-                        <label htmlFor="txt-term">
+                        <InputLabel name="term" label="Term" >
                             <input type="text"
                                    id="txt-term"
                                    value={term}
                                    onChange={this.onMortgageChange.bind(this, 'term')}
                             />
-                            <span>{pointsCost}</span>
-                            Term
-                        </label>
+                        </InputLabel>
                     </div>
                     <div className="m-b--standard">
                         <ReadOnlyStacked name="monthlyPayment"
@@ -70,18 +65,17 @@ class MortgageCalculator extends React.Component {
                     <div data-region="additional-payment">
                         <SubSectionHeader title="Additional Payments" />
                         <div className="m-b--standard">
-                            <label htmlFor="txt-additionalPayment-amount">
+                            <InputLabel name="additional-payment" label="Payment" >
                                 <input type="text"
-                                       id="txt-additionalPayment-amount"
+                                       data-id="txt-additionalPayment-amount"
                                        value={additionalPayment.amount}
                                        onChange={this.onAdditionalPaymentChange.bind(this, 'amount')}
                                 />
-                                Payment
-                            </label>
+                            </InputLabel>
                         </div>
                         <div className="m-b--standard">
-                            <label htmlFor="sel-additionalPayment-frequency">
-                                <Select id="sel-additionalPayment-frequency"
+                            <InputLabel name="additional-frequency" label="Frequency" >
+                                <Select data-id="sel-additionalPayment-frequency"
                                         value={additionalPayment.frequency}
                                         onChange={this.onAdditionalPaymentChange.bind(this, 'frequency')}
                                         options={[
@@ -93,8 +87,7 @@ class MortgageCalculator extends React.Component {
                                             {label: 'Annual', value: 12}
                                         ]}
                                         />
-                                Frequency
-                            </label>
+                            </InputLabel>
                         </div>
                     </div>
                 </form>

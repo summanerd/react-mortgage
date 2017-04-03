@@ -1,0 +1,25 @@
+
+.input-field{
+    position: relative;
+    &:after{
+        clear: right;
+    }
+
+    &__hint--inline{
+        position: absolute;
+        right: 5px;
+        font-size: .7rem;
+        line-height: 1.7rem;
+        color: #aaa;
+    }
+
+    input, select, textarea {
+        float: right;
+        width: 160px;
+        padding: 5px;
+    }
+}
+
+.inline-hint{
+    position: absolute;
+}

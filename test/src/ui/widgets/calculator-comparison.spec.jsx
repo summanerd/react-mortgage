@@ -70,8 +70,8 @@ describe('ui', function () {
                 describe('and additional payment is updated to $100 /mo', function () {
                     beforeEach(function (done) {
                         this.calculator = this.SUT.find('MortgageCalculator').last();
-                        this.input = this.calculator.find('#txt-additionalPayment-amount');
-                        this.frequencySelect = this.calculator.find('#sel-additionalPayment-frequency');
+                        this.input = this.calculator.find('[data-field="additional-payment"] input');
+                        this.frequencySelect = this.calculator.find('[data-field="additional-frequency"] select');
 
                         this.input.simulate('focus')
                             .simulate('change', { target: { value: '100' } });
@@ -119,7 +119,7 @@ describe('ui', function () {
                 describe('and interest rate is changed to 3.95', function () {
                     beforeEach(function (done) {
                         this.calculator = this.SUT.find('MortgageCalculator').last();
-                        this.input = this.calculator.find('#txt-interest-rate');
+                        this.input = this.calculator.find('[data-field="interestRate"] input');
 
                         this.input.simulate('focus')
                             .simulate('change', { target: { value: '3.95' } });
