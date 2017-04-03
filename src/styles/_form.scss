@@ -1,25 +1,29 @@
 
-.input-field{
+.input-field {
     position: relative;
-    &:after{
+
+    &:after {
         clear: right;
     }
 
-    &__hint--inline{
-        position: absolute;
-        right: 5px;
+    &__hint{
         font-size: .7rem;
         line-height: 1.7rem;
         color: #aaa;
-    }
 
-    input, select, textarea {
-        float: right;
-        width: 160px;
-        padding: 5px;
+        &--inline {
+            position: absolute;
+            right: 5px;
+        }
     }
 }
 
-.inline-hint{
+input, select, textarea {
+    float: right;
+    width: 160px;
+    padding: 5px;
+}
+
+.inline-hint {
     position: absolute;
 }

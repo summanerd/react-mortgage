@@ -11,7 +11,7 @@ function InputLabel(props) {
                 {props.label}
                 {props.children}
             </label>
-            <span className="input-field__hint--inline">{props.inlineHint}</span>
+            <span className="input-field__hint input-field__hint--inline">{props.inlineHint}</span>
             <div className="clear--both" />
         </div>
     )
