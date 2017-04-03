@@ -1,4 +1,4 @@
-import FixedMortgage from './fixed-mortgage';
+import {FixedMortgage} from './mortgage.factory';
 
 export {FixedMortgage};
-export {MortgageFactory} from './factory';
+export {Mortgage} from './mortgage';

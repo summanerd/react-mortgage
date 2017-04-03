@@ -1,8 +1,8 @@
 import {getMortgageDiff} from './helper';
 
-export {MortgageFactory};
+export {Mortgage};
 
-function MortgageFactory({getMonthlyPayment, getMortgageSchedule}) {
+function Mortgage({getMonthlyPayment, getMortgageSchedule}) {
     if (!getMonthlyPayment) {
         throw new Error('mandatory config \'getMonthlyPayment\' missing.')
     }

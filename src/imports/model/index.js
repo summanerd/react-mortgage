@@ -1,3 +1,3 @@
-import * as Mortgage from './mortgage';
+import * as mortgage from './mortgage';
 
-export {Mortgage};
+export {mortgage};

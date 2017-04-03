@@ -1,6 +1,6 @@
-import {Mortgage} from '../import';
+import {mortgage} from '../import';
 
-const {FixedMortgage} = Mortgage;
+const {FixedMortgage} = mortgage;
 
 describe('Model', function () {
     describe('Mortgage', function () {

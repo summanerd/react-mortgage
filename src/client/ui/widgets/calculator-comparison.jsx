@@ -1,8 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-import FixedMortgage from '../../../imports/model/mortgage/fixed-mortgage';
-import {getMortgageDiff} from '../../../imports/model/mortgage/helper';
+import {FixedMortgage} from '../../../imports/model/mortgage/mortgage.factory';
 import MortgageCalculator from '../components/mortgage-calculator/index.jsx';
 import MortgageDiff from '../components/mortgage-diff.jsx';
 import {Headers} from '../common';

@@ -1,6 +1,6 @@
-import {Mortgage} from '../import';
+import {mortgage} from '../import';
 
-const {MortgageFactory} = Mortgage;
+const {Mortgage} = mortgage;
 
 describe('Model', function () {
     describe('Mortgage', function () {
@@ -10,7 +10,7 @@ describe('Model', function () {
 
                 beforeEach(function(){
                     this.SUT = function () {
-                        return MortgageFactory({getMortgageSchedule: {}})
+                        return Mortgage({getMortgageSchedule: {}})
                     };
                 });
     
@@ -23,7 +23,7 @@ describe('Model', function () {
 
                 beforeEach(function(){
                     this.SUT = function () {
-                        return MortgageFactory({getMonthlyPayment: {}})
+                        return Mortgage({getMonthlyPayment: {}})
                     };
                 });
 
