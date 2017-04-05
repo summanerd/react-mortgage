@@ -2,10 +2,12 @@ import React from 'react';
 import {render} from 'react-dom';
 
 import {FixedMortgage} from '../../../imports/model/mortgage/mortgage.factory';
+import Property from '../../../imports/model/property/property';
 import MortgageCalculator from '../components/mortgage-calculator/index.jsx';
 import MortgageSummary from '../components/mortgage-calculator/summary.jsx';
 import MortgageDiff from '../components/mortgage-diff.jsx';
 import {Headers} from '../common';
+import HomeDetails from './home-details.jsx';
 
 const {SectionTitle, PageTitle} = Headers;
 const defaultMortgage = {
@@ -37,11 +39,12 @@ export class CompareCalculator extends React.Component {
                     <section className="column small-12 large-6">
                         <div className="row">
 
-                            {mortgages.map((mortgageName)=>{
-                                const mortgage = this.state.mortgages[mortgageName];
+                            {mortgages.map((name)=>{
+                                const mortgage = this.state.mortgages[name];
                                 return (
-                                    <div key={mortgageName} data-mortgage={mortgageName} className="column small-12 large-6">
-                                        <MortgageCalculator mortgage={mortgage} onChange={this.onChange.bind(this, mortgageName)}/>
+                                    <div key={name} data-mortgage={name} className="column small-12 large-6">
+                                        <HomeDetails home={this.state.homes[name]} onChange={this.onHomeChange.bind(this, name)} />
+                                        <MortgageCalculator mortgage={mortgage} onChange={this.onChange.bind(this, name)}/>
                                         <MortgageSummary mortgage={mortgage}/>
                                     </div>
                                 );
@@ -58,13 +61,18 @@ export class CompareCalculator extends React.Component {
     }
     
     initializeState (props) {
+        const {purchasePrice, downPayment} = props;
         this.mortgages = {};
-        let state = {mortgages: {}};
+        let state = {mortgages: {}, homes: {}};
 
         for (let i = 0; i < props.numberOfCalculators; i++){
             const key = `mortgage${i + 1}`;
-            this.mortgages[key] = FixedMortgage.create(defaultMortgage);
+            const home = Property().create({purchasePrice, downPayment}),
+                mortgage = FixedMortgage.create({...defaultMortgage, initialBalance: home.financingNeeded});
+            home.addMortgage(mortgage);
+            this.mortgages[key] = mortgage;
             state.mortgages[key] = this.mortgages[key].getDetails();
+            state.homes[key] = home;
         }
 
         state.compare = Object.keys(state.mortgages).slice(0, props.numberOfCalculators);
@@ -91,8 +99,26 @@ export class CompareCalculator extends React.Component {
 
         this.setState({mortgages});
     }
+
+    onHomeChange(name, prop, value) {
+        let home = this.state.homes[name];
+
+        home[prop] = value;
+        const homes = Object.assign({},
+            this.state.homes,
+            {
+                [name]: home
+            }
+        );
+
+        const newBalance = home.financingNeeded - home.totalFinancing;
+        this.onChange(name, 'initialBalance', newBalance < 0 ? 0 : newBalance);
+        this.setState({homes});
+    }
 }
 
 CompareCalculator.defaultProps = {
-    numberOfCalculators: 2
+    numberOfCalculators: 2,
+    purchasePrice: 110000,
+    downPayment: 15000
 };

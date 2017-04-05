@@ -33,6 +33,10 @@ function Mortgage({getMonthlyPayment, getMortgageSchedule}) {
                 return this.pointsCost + this.schedule.totalInterest;
             },
 
+            get balance() {
+                return this.schedule.balance;
+            },
+
             set additionalPayment(_additionalPayment) {
                 const {amount = 0, frequency = 0} = (_additionalPayment || {});
                 additionalPayment = {amount, frequency};

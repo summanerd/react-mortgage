@@ -9,7 +9,10 @@ describe('ui', function () {
                 beforeEach(function () {
                     this.container = document.createElement('div');
                     document.body.appendChild(this.container);
-                    this.SUT = mount(<CompareCalculator />, {attachTo: this.container});
+                    this.SUT = mount(
+                        <CompareCalculator purchasePrice={93279} downPayment={0}/>
+                        , {attachTo: this.container}
+                    );
                 });
 
                 afterEach(function () {

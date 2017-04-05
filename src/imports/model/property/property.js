@@ -12,19 +12,30 @@ export default function Property() {
     function getModel(attr = {}) {
         let mortgages = [],
             valueByDate = [],
-            downPayment = 0;
+            downPayment = attr.downPayment || 0,
+            purchasePrice = attr.purchasePrice || 0;
+
+        delete attr.downPayment;
+        delete attr.purchasePrice;
 
         return {
             name: '',
-            purchasePrice: 0,
             purchaseDate: new Date(),
+
+            get purchasePrice() {
+                return purchasePrice;
+            },
+
+            set purchasePrice(_purchasePrice) {
+                purchasePrice = parseFloat(_purchasePrice);
+            },
 
             get downPayment() {
                 return downPayment;
             },
 
             set downPayment(_downPayment) {
-                downPayment = _downPayment;
+                downPayment = parseFloat(_downPayment);
             },
 
             get downPaymentPercent() {
@@ -57,6 +68,18 @@ export default function Property() {
 
             get hasMortgages() {
                 return !!mortgages.length;
+            },
+
+            get totalFinancing() {
+                return this.hasMortgages
+                    ? mortgages.reduce((total,mortgage)=> total + mortgage.initialBalance, 0)
+                    : 0;
+            },
+
+            get financingNeeded() {
+                const need = purchasePrice - downPayment -  this.totalFinancing;
+
+                return need < 0 ? 0 : need;
             },
 
             setDownPaymentByPercent(percent){

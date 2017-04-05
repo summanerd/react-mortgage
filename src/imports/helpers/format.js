@@ -2,7 +2,7 @@
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October",
     "November", "December"];
 
-export default {formatShortDate, formatMoney};
+export default {formatShortDate, formatMoney, formatPercent};
 
 function formatShortDate(val) {
     if ( !val ) {
@@ -25,6 +25,19 @@ function formatMoney(val) {
         val = parseFloat(val),
         isNegative = val < 0,
         money = (parseFloat( val )).toFixed(2).replace(/^\-/, '').split( /(?=(?:\d{3})+(?:\.|$))/g ).join( "," );
+
+    return isNegative ? '(' + sign + money + ')' : sign + money;
+}
+
+function formatPercent(val) {
+    if ( !val ) {
+        return '--';
+    }
+    // var sign = window.userLanguage === 'en-US' ? '$' : '',
+    var sign = '',
+        val = parseFloat(val),
+        isNegative = val < 0,
+        money = (parseFloat( val * 100 )).toFixed(2).replace(/^\-/, '').split( /(?=(?:\d{3})+(?:\.|$))/g ).join( "," );
 
     return isNegative ? '(' + sign + money + ')' : sign + money;
 }

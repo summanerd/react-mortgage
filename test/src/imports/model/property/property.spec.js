@@ -4,7 +4,7 @@ import {Property} from '../import';
 describe('Model', function () {
     describe('Property', function () {
 
-        describe('when inititialized', function () {
+        describe('when initialized', function () {
 
             beforeEach(function () {
                 this.SUT = Property().create();
@@ -35,12 +35,70 @@ describe('Model', function () {
             });
         });
 
+        describe('when purchase price is 100,000 and down payment is 14%', function () {
+
+            beforeEach(function () {
+                this.SUT = Property().create({purchasePrice: 100000});
+                this.SUT.setDownPaymentByPercent(.14);
+            });
+
+            it('downPayment should be 14,000', function () {
+                expect(this.SUT.downPayment).toBeLessThan(14000.01);
+                expect(this.SUT.downPayment).toBeGreaterThan(13999.99);
+            });
+
+            it('financing needed should be 86,000', function () {
+                expect(this.SUT.financingNeeded).toBe(86000);
+            });
+        });
+
+        describe('when purchase price is 100,000 and down payment is 13,000', function () {
+
+            beforeEach(function () {
+                this.SUT = Property().create({purchasePrice: 100000, downPayment: 13000});
+            });
+
+            it('downPayment should be 13,000', function () {
+                expect(this.SUT.downPayment).toBeLessThan(13000.01);
+                expect(this.SUT.downPayment).toBeGreaterThan(12999.99);
+            });
+
+            it('downPaymentPercent should be 13%', function () {
+                expect(this.SUT.downPaymentPercent).toBeLessThan(.131);
+                expect(this.SUT.downPaymentPercent).toBeGreaterThan(.12);
+            });
+
+            it('financing needed should be 87,000', function () {
+                expect(this.SUT.financingNeeded).toBe(87000);
+            });
+
+            describe('when purchase price is changed to 10,000', function () {
+                beforeEach(function () {
+                    this.SUT.purchasePrice = 10000;
+                });
+
+                it('financing needed should be 87,000', function () {
+                    expect(this.SUT.financingNeeded).toBe(0);
+                });
+            });
+
+            describe('when purchase price is changed to 1,000,000', function () {
+                beforeEach(function () {
+                    this.SUT.purchasePrice = 1000000;
+                });
+
+                it('financing needed should be 987,000', function () {
+                    expect(this.SUT.financingNeeded).toBe(987000);
+                });
+            });
+        });
+
         describe('when purchase price is 100,000 and house is worth 120,000', function () {
 
             beforeEach(function () {
                 this.SUT = Property().create({purchasePrice: 100000});
-                this.SUT.addValue({homeValue: 120000})
-                this.SUT.addMortgage({balance: 85000})
+                this.SUT.addValue({homeValue: 120000});
+                this.SUT.addMortgage({balance: 85000});
             });
 
             describe('and mortgage is $85,000', function () {

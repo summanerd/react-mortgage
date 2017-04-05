@@ -6,6 +6,8 @@ const extractSass = new ExtractTextPlugin({
     disable: false//process.env.NODE_ENV === "development"
 });
 const BUILD_DIR = path.resolve(__dirname, 'public');
+const SRC_DIR = path.resolve(__dirname, 'src');
+const STYLE_DIR = path.resolve(__dirname, 'src/styles');
 const APP_DIR = path.resolve(__dirname, 'src/client');
 const FOUNDATION_DIR = path.resolve(__dirname, 'node_modules/foundation-sites');
 
@@ -26,7 +28,10 @@ const config = {
         rules: [
             {
                 test: /\.jsx?/,
-                include: APP_DIR,
+                include: [
+                    APP_DIR,
+                    path.resolve(SRC_DIR, "imports")
+                ],
                 loader: 'babel-loader'
             },
             {
