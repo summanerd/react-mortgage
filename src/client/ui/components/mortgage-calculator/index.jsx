@@ -24,6 +24,7 @@ class MortgageCalculator extends React.Component {
                     <div className="m-b--standard">
                         <InputLabel name="loanAmount" label="Loan Amount" >
                             <input type="text"
+                                   disabled={this.props.disableLoanAmount}
                                    id="txt-loan-amount"
                                    value={initialBalance}
                                    onChange={this.onMortgageChange.bind(this, 'initialBalance')}

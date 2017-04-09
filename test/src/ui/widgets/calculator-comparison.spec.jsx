@@ -28,6 +28,11 @@ describe('ui', function () {
                     expect(this.SUT.find('[data-region="mortgage-diff"]').length).toEqual(1);
                 });
 
+                it('should disable loan amount', function () {
+                    const $loanAmountInputs = this.SUT.find('[data-field="loanAmount"] input');
+                    $loanAmountInputs.forEach(input=> expect(input.props().disabled).toEqual(true));
+                });
+
                 it('total interest: $ 85,963.31', function () {
                     let monthlyPayment = this.SUT.find('MortgageSummary').last()
                         .find('[data-field="totalInterest"]')

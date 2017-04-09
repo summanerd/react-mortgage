@@ -44,7 +44,7 @@ export class CompareCalculator extends React.Component {
                                 return (
                                     <div key={name} data-mortgage={name} className="column small-12 large-6">
                                         <HomeDetails home={this.state.homes[name]} onChange={this.onHomeChange.bind(this, name)} />
-                                        <MortgageCalculator mortgage={mortgage} onChange={this.onChange.bind(this, name)}/>
+                                        <MortgageCalculator mortgage={mortgage} disableLoanAmount={true} onChange={this.onChange.bind(this, name)}/>
                                         <MortgageSummary mortgage={mortgage}/>
                                     </div>
                                 );
