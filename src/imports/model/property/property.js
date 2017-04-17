@@ -35,10 +35,14 @@ export default function Property() {
             },
 
             set downPayment(_downPayment) {
-                downPayment = parseFloat(_downPayment);
+                downPayment = parseFloat(_downPayment) || _downPayment;
             },
 
             get downPaymentPercent() {
+                if (!downPayment) {
+                    return 0;
+                }
+
                 return downPayment / this.purchasePrice;
             },
 
@@ -77,7 +81,8 @@ export default function Property() {
             },
 
             get financingNeeded() {
-                const need = purchasePrice - downPayment -  this.totalFinancing;
+                const _downPayment = downPayment || 0;
+                const need = purchasePrice - _downPayment -  this.totalFinancing;
 
                 return need < 0 ? 0 : need;
             },

@@ -10,6 +10,62 @@ describe('ui', function () {
                     this.container = document.createElement('div');
                     document.body.appendChild(this.container);
                     this.SUT = mount(
+                        <CompareCalculator />
+                        , {attachTo: this.container}
+                    );
+                });
+
+                afterEach(function () {
+                    this.SUT.unmount();
+                    document.body.removeChild(this.container)
+                });
+
+                it('should render two calculators', function () {
+                    expect(this.SUT.find('MortgageCalculator').length).toEqual(2);
+                });
+
+                it('should display diff', function () {
+                    expect(this.SUT.find('[data-region="mortgage-diff"]').length).toEqual(1);
+                });
+
+                it('should display purchase price as 110,000', function () {
+                    const $loanAmountInputs = this.SUT.find('[data-field="purchasePrice"] input');
+                    $loanAmountInputs.forEach(input=> expect(input.props().value).toEqual(110000));
+                });
+
+                it('should display down payment as 15,000', function () {
+                    const $loanAmountInputs = this.SUT.find('[data-field="downPayment"] input');
+                    $loanAmountInputs.forEach(input=> expect(input.props().value).toEqual(15000));
+                });
+
+                it('should disable loan amount', function () {
+                    const $loanAmountInputs = this.SUT.find('[data-field="loanAmount"] input');
+                    $loanAmountInputs.forEach(input=> expect(input.props().disabled).toEqual(true));
+                });
+
+                describe('when down payment is changed to 2,000', function () {
+                    beforeEach(function (done) {
+                        const $input = this.SUT.find('[data-field="downPayment"] input').last();
+
+                        $input.simulate('change', {target: {value: '2000'}});
+
+                        this.SUT.update();
+
+                        setTimeout(done);
+                    });
+
+                    it('should display loan amount as 108,000', function () {
+                        const $loanAmountInput = this.SUT.find('[data-field="loanAmount"] input').last();
+                        expect($loanAmountInput.props().value).toEqual(108000);
+                    });
+                });
+            });
+
+            describe('when rendered with mortgage amount specified', function () {
+                beforeEach(function () {
+                    this.container = document.createElement('div');
+                    document.body.appendChild(this.container);
+                    this.SUT = mount(
                         <CompareCalculator purchasePrice={93279} downPayment={0}/>
                         , {attachTo: this.container}
                     );
@@ -43,7 +99,7 @@ describe('ui', function () {
                 });
 
                 describe('values in diff should be:', function () {
-                    beforeEach(function(){
+                    beforeEach(function () {
                         this.diffRegion = this.SUT.find('[data-region="mortgage-diff"]');
                     });
 
@@ -82,16 +138,16 @@ describe('ui', function () {
                         this.frequencySelect = this.calculator.find('[data-field="additional-frequency"] select');
 
                         this.input.simulate('focus')
-                            .simulate('change', { target: { value: '100' } });
+                            .simulate('change', {target: {value: '100'}});
                         this.frequencySelect.simulate('focus')
-                            .simulate('change', { target: { value: '1' } });
+                            .simulate('change', {target: {value: '1'}});
                         this.SUT.update();
 
                         setTimeout(done);
                     });
 
                     describe('values in diff should be:', function () {
-                        beforeEach(function(){
+                        beforeEach(function () {
                             this.diffRegion = this.SUT.find('[data-region="mortgage-diff"]');
                         });
 
@@ -130,14 +186,14 @@ describe('ui', function () {
                         this.input = this.calculator.find('[data-field="interestRate"] input');
 
                         this.input.simulate('focus')
-                            .simulate('change', { target: { value: '3.95' } });
+                            .simulate('change', {target: {value: '3.95'}});
                         this.SUT.update();
 
                         setTimeout(done);
                     });
 
                     describe('values in diff should be:', function () {
-                        beforeEach(function(){
+                        beforeEach(function () {
                             this.diffRegion = this.SUT.find('[data-region="mortgage-diff"]');
                         });
 
@@ -177,7 +233,7 @@ describe('ui', function () {
                         this.input = this.calculator.find('[data-field="points"] input');
 
                         this.input.simulate('focus')
-                            .simulate('change', { target: { value: '2' } });
+                            .simulate('change', {target: {value: '2'}});
                         this.SUT.update();
 
                         setTimeout(done);
@@ -202,7 +258,7 @@ describe('ui', function () {
                     });
 
                     describe('values in diff should be:', function () {
-                        beforeEach(function(){
+                        beforeEach(function () {
                             this.diffRegion = this.SUT.find('[data-region="mortgage-diff"]');
                         });
 

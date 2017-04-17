@@ -111,7 +111,7 @@ export class CompareCalculator extends React.Component {
             }
         );
 
-        const newBalance = home.financingNeeded - home.totalFinancing;
+        const newBalance = home.purchasePrice - home.downPayment;
         this.onChange(name, 'initialBalance', newBalance < 0 ? 0 : newBalance);
         this.setState({homes});
     }
