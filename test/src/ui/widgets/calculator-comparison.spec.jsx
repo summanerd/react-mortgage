@@ -138,12 +138,18 @@ describe('ui', function () {
                         this.frequencySelect = this.calculator.find('[data-field="additional-frequency"] select');
 
                         this.input.simulate('focus')
-                            .simulate('change', {target: {value: '100'}});
+                            .simulate('change', {target: {value: '100'}})
+                            .simulate('blur');
                         this.frequencySelect.simulate('focus')
                             .simulate('change', {target: {value: '1'}});
                         this.SUT.update();
 
                         setTimeout(done);
+                    });
+
+                    it('additional amount should be \'100\'', function () {
+
+                        expect(this.input.props().value).toEqual(100);
                     });
 
                     describe('values in diff should be:', function () {
@@ -176,6 +182,20 @@ describe('ui', function () {
                                 .text().trim();
 
                             expect(monthlyPayment).toMatch(/\$ 29,414.66$/);
+                        });
+                    });
+
+                    describe('when amount of additional payment is changed to \'\'', function () {
+                        beforeEach(function () {
+                            this.input.simulate('focus')
+                                .simulate('change', {target: {value: ''}})
+                                .simulate('blur');
+                            this.SUT.update();
+                        });
+
+                        it('additional amount should be blank', function () {
+
+                            expect(this.input.props().value).toBeUndefined();
                         });
                     });
                 });

@@ -38,8 +38,17 @@ function Mortgage({getMonthlyPayment, getMortgageSchedule}) {
             },
 
             set additionalPayment(_additionalPayment) {
-                const {amount = 0, frequency = 0} = (_additionalPayment || {});
-                additionalPayment = {amount, frequency};
+                const {amount, frequency} = (_additionalPayment || {}),
+                    val = {};
+                
+                if (amount || amount === 0) {
+                    val.amount = amount
+                }
+                if (frequency || frequency === 0) {
+                    val.frequency = frequency
+                }
+
+                additionalPayment = val;
             },
 
             getDetails () {

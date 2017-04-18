@@ -99,12 +99,18 @@ class MortgageCalculator extends React.Component {
 
     onAdditionalPaymentChange(prop, event) {
         const {additionalPayment} = this.props.mortgage,
-            val = parseFloat(getTextValueFromEvent(event));
+            val = getTextValueFromEvent(event);
+        let valAsFloat = parseFloat(val),
+            valIsNan = valAsFloat !== valAsFloat;
+
+        if (valIsNan){
+            valAsFloat = null;
+        }
         
         this.props.onChange('additionalPayment', Object.assign(
             {},
             additionalPayment,
-            {[prop]: val}
+            {[prop]: valAsFloat}
         ));
     }
 
