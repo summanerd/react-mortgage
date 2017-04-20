@@ -33,6 +33,10 @@ function MortgageScheduleFactory() {
                 return collection;
             },
 
+            get initialBalance() {
+                return initialBalance;
+            },
+
             get startDate() {
                 return startDate;
             },
