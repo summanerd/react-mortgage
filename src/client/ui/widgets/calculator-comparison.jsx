@@ -6,6 +6,7 @@ import Property from '../../../imports/model/property/property';
 import MortgageCalculator from '../components/mortgage-calculator/index.jsx';
 import MortgageSummary from '../components/mortgage-calculator/summary.jsx';
 import MortgageDiff from '../components/mortgage-diff.jsx';
+import LineChart from '../components/charts/line.chart.jsx';
 import {Headers} from '../common';
 import HomeDetails from './home-details.jsx';
 
@@ -26,6 +27,7 @@ export class CompareCalculator extends React.Component {
     
     render() {
         const mortgages = Object.keys(this.state.mortgages);
+        const chartData = mortgages.map(mortgageName=> this.state.mortgages[mortgageName].schedule.amortization);
 
         return (
             <div data-region="calculator-comparison">
@@ -54,6 +56,7 @@ export class CompareCalculator extends React.Component {
                     <section className="column small-12 large-6 end">
                         <SectionTitle title="Difference" />
                         <MortgageDiff diff={this.getDiff()} />
+                        <LineChart data={chartData} />
                     </section>
                 </div>
             </div>

@@ -29,6 +29,10 @@ function MortgageScheduleFactory() {
                 return schedule;
             },
 
+            get amortization() {
+                return collection;
+            },
+
             get startDate() {
                 return startDate;
             },
