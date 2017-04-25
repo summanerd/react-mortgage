@@ -54,10 +54,6 @@ export default class LineChart extends React.Component{
 
     }
 
-    componentWillUnmount() {
-        this.state.chartContainer.remove();
-    }
-
     updateChart() {
         const {width, height} = this.state;
         const {chartContainer} = this;
