@@ -3,33 +3,64 @@ import * as d3 from 'd3';
 
 
 export default class LineChart extends React.Component{
+    static defaultProps = {
+        containerWidth: '400',
+        containerHeight: '250',
+        margin: {top: 20, right: 20, bottom: 30, left: 50},
+        colors: ['#0000FF', '#00FF00']
+    };
+
     constructor(props){
         super(props);
-        this.colors = ['#0000FF', '#00FF00'];
+
+        this.chartCount = 0;
+        this.state = this.getInitialState(props);
     }
 
     componentWillMount () {
-        
+
     }
 
     render () {
         return (
 
-            <svg data-region="line-chart" width="400" height="250" ref={el=> this.container = el}/>
+            <svg data-region="line-chart" width={this.props.containerWidth} height={this.props.containerHeight} ref={el=> this.container = el}/>
         );
     }
 
-    componentWillReceiveProps(newProps){
-        console.log('receivingprops', newProps)
+    getInitialState(props){
+        const {containerWidth, containerHeight, margin} = props,
+            width = containerWidth - margin.left - margin.right,
+            height = containerHeight - margin.top - margin.bottom;
+
+        return {
+            width,
+            height
+        };
+    }
+
+    componentDidUpdate() {
+        this.updateChart();
     }
 
     componentDidMount() {
         const svg = d3.select(this.container),
-            margin = {top: 20, right: 20, bottom: 30, left: 50},
-            width = +svg.attr("width") - margin.left - margin.right,
-            height = +svg.attr("height") - margin.top - margin.bottom,
-            chartContainer = svg.append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            {margin} = this.props;
+
+        this.chartContainer = svg.append('g')
+            .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+        
+        this.updateChart();
+
+    }
+
+    componentWillUnmount() {
+        this.state.chartContainer.remove();
+    }
+
+    updateChart() {
+        const {width, height} = this.state;
+        const {chartContainer} = this;
 
         const {xScale, yScale, zScale} = getScales({width, height});
         const {xAxis, yAxis} = addAxes({chartContainer, xScale, yScale, height});
@@ -37,7 +68,7 @@ export default class LineChart extends React.Component{
 
         const data = this.props.data.map((_data, index)=> {
             return {
-                id: `mortgage-${index}`,
+                id: `mortgage-${++this.chartCount}`,
                 values: _data
             };
         });
@@ -46,12 +77,13 @@ export default class LineChart extends React.Component{
         yScale.domain(yDomain);
         zScale.domain(data.map(function(_data) { return _data.id; }));
 
+        addYAxisLabel({chartContainer, yAxis, label: 'Remaining Balance'});
 
-        createLineChart({
+        this.prevLine = createLineChart({
             chartContainer,
             width,
             height,
-            lineColor: this.colors,
+            lineColor: this.props.colors.slice(),
             data,
             xScale,
             yScale,
@@ -59,16 +91,17 @@ export default class LineChart extends React.Component{
             xAxis,
             yAxis,
             xScaleFn,
-            yScaleFn
+            yScaleFn,
+            prevLine: this.prevLine
         });
-
-        addYAxisLabel({chartContainer, yAxis, label: 'Remaining Balance'});
         function xScaleFn(d){
             return d.date;
         }
         function yScaleFn(d){
             return d.balance;
         }
+
+        return chartContainer;
     }
 }
 
@@ -76,13 +109,17 @@ function getXYDomain({data}){
 
     const xyDomain = data.reduce((_xyDomain, schedule)=> {
         const first = schedule[schedule.length - 1],
-            last = schedule[0];
+            last = schedule[0] || {};
+
+        if (typeof first === 'undefined' || typeof last === undefined){
+            return _xyDomain;
+        }
 
         _xyDomain.balance = [].concat(_xyDomain.balance, [first.balance, last.balance]);
         _xyDomain.date = {
             ..._xyDomain.date,
-            [first.dateKey]: {date: first.date, dateKey: first.dateKey},
-            [last.dateKey]: {date: last.date, dateKey: last.dateKey}
+            [`${first.date.getFullYear()}-${first.date.getMonth()}`]: {date: first.date, dateKey: first.dateKey},
+            [`${last.date.getFullYear()}-${last.date.getMonth()}`]: {date: last.date, dateKey: last.dateKey}
         };
 
         return _xyDomain;
@@ -94,7 +131,7 @@ function getXYDomain({data}){
 
     const xDomain = Object.keys(xyDomain.date).sort().map(dateKey=> xyDomain.date[dateKey].date);
 
-    return {yDomain, xDomain};
+    return {yDomain: [yDomain[0], yDomain.pop()], xDomain: [xDomain[0], xDomain.pop()]};
 }
 
 function addYAxisLabel({yAxis, label}){
@@ -127,6 +164,8 @@ function getScales({width, height}) {
 }
 
 function addAxes({chartContainer, xScale, yScale, height}){
+    chartContainer.selectAll('.line-chart__x-axis').remove();
+    chartContainer.selectAll('.line-chart__y-axis').remove();
 
     const xAxis = chartContainer.append("g");
     xAxis
@@ -144,31 +183,40 @@ function addAxes({chartContainer, xScale, yScale, height}){
     };
 }
 
-function createLineChart({chartContainer, data, lineColor, xScale, yScale, zScale, xScaleFn, yScaleFn, width, height}){
+function createLineChart({chartContainer, data, lineColor, xScale, yScale, zScale, xScaleFn, yScaleFn, width}){
 
     const line = getLine({xScale, yScale, xScaleFn, yScaleFn});
 
     const schedule = chartContainer.selectAll(".schedule")
-        .data(data)
-        .enter().append("g")
+        .data(data, d=> {
+            return d.id
+        });
+
+    schedule.exit().remove();
+    const cont = schedule.enter()
+        .append("g")
         .attr("class", "schedule");
 
-    schedule.append("path")
-        .attr("class", "line")
-        .attr("fill", "none")
-        .attr("stroke", ()=> lineColor.shift() || '#000000')
-        .attr("stroke-linejoin", "round")
-        .attr("stroke-linecap", "round")
-        .attr("stroke-width", 1.5)
+    const lineChart = cont
+        .selectAll("path")
+        .data(d=> [d], d=> {
+            return d.id
+        });
 
-        .attr("d", function(d) { return line(d.values); })
-        .style("stroke", function(d) { return zScale(d.id); });
+    lineChart
+        .enter()
+        .append('path')
+            .merge(lineChart)
+        .attr("d", function(d) {
+            return line(d.values);
+        })
+            .attr("class", `line`)
+            .attr("fill", "none")
+            .attr("stroke", ()=> lineColor.shift() || '#000000')
+            .attr("stroke-linejoin", "round")
+            .attr("stroke-linecap", "round")
+            .attr("stroke-width", 1.5)
+            .style("stroke", function(d) { return zScale(d.id); });
 
-    schedule.append("text")
-        .datum(function(d) { return {id: d.id, value: d.values[d.values.length - 1]}; })
-        .attr("transform", function(d) { return "translate(" + xScale(d.value.date) + "," + yScale(d.value.balance) + ")"; })
-        .attr("x", 3)
-        .attr("dy", "0.35em")
-        .style("font", "10px sans-serif")
-        .text(function(d) { return d.id; });
+    return line;
 }
